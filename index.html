@@ -5,7 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Player</title>
     <style>
-        /* Style for the control buttons */
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .video-container {
+            position: relative;
+            width: 80%;
+        }
+
         .video-controls {
             position: absolute;
             bottom: 10px;
@@ -17,10 +30,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 80%;
+            width: 100%;
+            z-index: 1;
         }
 
-        /* Style for the play/pause button */
+        #videoIframe {
+            width: 100%;
+            height: calc(100vh - 80px); /* Adjusted height to leave space for the control bar */
+        }
+
         #playPauseBtn {
             cursor: pointer;
         }
@@ -28,17 +46,16 @@
 </head>
 <body>
 
-<!-- Video iframe -->
-<iframe id="videoIframe" src="https://crichdstreaming.xyz/embed2.php?id=btsp1&q=TNT Sports 1" name="iframe_a" scrolling="no" allowfullscreen></iframe>
+<div class="video-container">
+    <iframe id="videoIframe" src="https://crichdstreaming.xyz/embed2.php?id=btsp1&q=TNT Sports 1" name="iframe_a" scrolling="no" allowfullscreen></iframe>
 
-<!-- Control buttons -->
-<div class="video-controls">
-    <button id="playPauseBtn">Play</button>
-    <button id="fullscreenBtn">Fullscreen</button>
-    <button id="muteBtn">Mute</button>
+    <div class="video-controls">
+       <button id="playPauseBtn">Hello</button>
+       <button id="fullscreenBtn">Fullscreen</button>
+        <button id="muteBtn">World</button>
+    </div>
 </div>
 
-<!-- JavaScript for controlling the video -->
 <script>
     const videoIframe = document.getElementById('videoIframe');
     const playPauseBtn = document.getElementById('playPauseBtn');
@@ -46,6 +63,7 @@
     const muteBtn = document.getElementById('muteBtn');
 
     let isPlaying = false;
+    let isMuted = false;
 
     playPauseBtn.addEventListener('click', togglePlayPause);
     fullscreenBtn.addEventListener('click', toggleFullscreen);
@@ -54,26 +72,31 @@
     function togglePlayPause() {
         if (isPlaying) {
             videoIframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-            playPauseBtn.textContent = 'Play';
+            playPauseBtn.textContent = 'Hi';
         } else {
             videoIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-            playPauseBtn.textContent = 'Pause';
+            playPauseBtn.textContent = 'Hello';
         }
         isPlaying = !isPlaying;
     }
 
     function toggleFullscreen() {
-        if (videoIframe.requestFullscreen) {
-            videoIframe.requestFullscreen();
-        } else if (videoIframe.mozRequestFullScreen) {
-            videoIframe.mozRequestFullScreen();
-        } else if (videoIframe.webkitRequestFullscreen) {
-            videoIframe.webkitRequestFullscreen();
+        if (!document.fullscreenElement) {
+            videoIframe.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
         }
     }
 
     function toggleMute() {
-        videoIframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+        if (isMuted) {
+            videoIframe.contentWindow.postMessage('{"event":"command","func":"unmute","args":""}', '*');
+        } else {
+            videoIframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+        }
+        isMuted = !isMuted;
     }
 </script>
 
