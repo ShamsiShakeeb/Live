@@ -47,16 +47,25 @@
 <body>
 
 <div class="video-container">
-    <iframe id="videoIframe" src="https://crichdstreaming.xyz/embed2.php?id=btsp1&q=TNT Sports 1" name="iframe_a" scrolling="no" allowfullscreen></iframe>
+
+    <iframe id="videoIframe" src="https://crichdstreaming.xyz/embed2.php?id=btsp1&q=TNT Sports 1" name="iframe_a" scrolling="no" allowfullscreen="true" allowtransparency="true" allow="autoplay, fullscreen" allowautoplay="yes" webkitallowfullscreen="" mozallowfullscreen=""></iframe> 
+	
 
     <div class="video-controls">
-       <button id="playPauseBtn">Hello</button>
+       <button id="playPauseBtn">Remove Tag</button>
        <button id="fullscreenBtn">Fullscreen</button>
-        <button id="muteBtn">World</button>
+        <button id="muteBtn">Mute</button>
     </div>
 </div>
 
 <script>
+	var len = document.querySelectorAll('iframe').length;
+	console.log("len: ",len);
+	for(var i=0;i<len;i++){
+		document.querySelectorAll('iframe')[i].removeAttribute("sandbox");
+	}
+	
+	
     const videoIframe = document.getElementById('videoIframe');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
@@ -70,12 +79,18 @@
     muteBtn.addEventListener('click', toggleMute);
 
     function togglePlayPause() {
+	
+	var len = document.querySelectorAll('iframe').length;
+	console.log("len: ",len);
+	for(var i=0;i<len;i++){
+		document.querySelectorAll('iframe')[i].removeAttribute("sandbox");
+	}
         if (isPlaying) {
             videoIframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-            playPauseBtn.textContent = 'Hi';
+            playPauseBtn.textContent = 'Remove Tag';
         } else {
             videoIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-            playPauseBtn.textContent = 'Hello';
+            playPauseBtn.textContent = 'Remove Tag';
         }
         isPlaying = !isPlaying;
     }
@@ -91,10 +106,11 @@
     }
 
     function toggleMute() {
+	WSUnmute();
         if (isMuted) {
-            videoIframe.contentWindow.postMessage('{"event":"command","func":"unmute","args":""}', '*');
+            player.setVolume(70);
         } else {
-            videoIframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+            player.setVolume(70);
         }
         isMuted = !isMuted;
     }
