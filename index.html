@@ -1,108 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8932024106964567"
-     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live TV Streaming</title>
+    <title>Video Player</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-       
-
-        .content {
-            max-width: 800px;
-            margin: 20px auto;
-        }
-
-        p {
-            color: #666;
-        }
-
-        footer {
-            margin-top: 20px;
-            text-align: center;
-            color: #888;
-        }
-    </style>
-	
-	
-	<style>
-        
-        .video-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
+        /* Style for the control buttons */
+        .video-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            width: 80%;
         }
 
-        iframe {
-            width: 80vw;
-            height: 45vw; /* Adjust the aspect ratio as needed */
-            max-width: 800px; /* Set a maximum width if desired */
-            max-height: 450px; /* Set a maximum height if desired */
+        /* Style for the play/pause button */
+        #playPauseBtn {
+            cursor: pointer;
         }
-
-        .fullscreen-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 999;
-        }
-		
     </style>
-	
 </head>
-
 <body>
 
-    <header>
-        <h1>Live TV Streaming <button onclick="toggleFullscreen()">FullScreen / Play</button> </h1>
-    </header>
+<!-- Video iframe -->
+<iframe id="videoIframe" src="https://crichdstreaming.xyz/embed2.php?id=btsp1&q=TNT Sports 1" name="iframe_a" scrolling="no" allowfullscreen></iframe>
 
-    <div class="video-container">
-		
-        <iframe id="videoIframe" src="https://crichdstreaming.xyz/embed2.php?id=btsp1&q=TNT Sports 1" name="iframe_a" scrolling="no" autoplay allowfullscreen >Your Browser Do not Support Iframe</iframe>
-    </div>
-	<p>Enjoy live streaming.</p>
+<!-- Control buttons -->
+<div class="video-controls">
+    <button id="playPauseBtn">Play</button>
+    <button id="fullscreenBtn">Fullscreen</button>
+    <button id="muteBtn">Mute</button>
+</div>
 
-    <footer>
-        <p>&copy; 2023 Live TV Streaming. All rights reserved.</p>
-    </footer>
-	
-	
-	<script>
+<!-- JavaScript for controlling the video -->
+<script>
     const videoIframe = document.getElementById('videoIframe');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const muteBtn = document.getElementById('muteBtn');
+
+    let isPlaying = false;
+
+    playPauseBtn.addEventListener('click', togglePlayPause);
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    muteBtn.addEventListener('click', toggleMute);
+
+    function togglePlayPause() {
+        if (isPlaying) {
+            videoIframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            playPauseBtn.textContent = 'Play';
+        } else {
+            videoIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            playPauseBtn.textContent = 'Pause';
+        }
+        isPlaying = !isPlaying;
+    }
 
     function toggleFullscreen() {
-        if (!document.fullscreenElement) {
-            videoIframe.requestFullscreen().catch(err => {
-                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
-            });
-        } else {
-            document.exitFullscreen();
+        if (videoIframe.requestFullscreen) {
+            videoIframe.requestFullscreen();
+        } else if (videoIframe.mozRequestFullScreen) {
+            videoIframe.mozRequestFullScreen();
+        } else if (videoIframe.webkitRequestFullscreen) {
+            videoIframe.webkitRequestFullscreen();
         }
+    }
+
+    function toggleMute() {
+        videoIframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
     }
 </script>
 
 </body>
-
 </html>

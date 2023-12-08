@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8932024106964567"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live TV Streaming</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+       
+
+        .content {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        p {
+            color: #666;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #888;
+        }
+    </style>
+	
+	
+	<style>
+        
+        .video-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        iframe {
+            width: 80vw;
+            height: 45vw; /* Adjust the aspect ratio as needed */
+            max-width: 800px; /* Set a maximum width if desired */
+            max-height: 450px; /* Set a maximum height if desired */
+        }
+
+        .fullscreen-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+        }
+		
+    </style>
+	
+</head>
+
+<body>
+
+    <header>
+        <h1>Live TV Streaming <button onclick="toggleFullscreen()">FullScreen / Play</button> </h1>
+    </header>
+
+    <div class="video-container">
+		
+        <iframe id="videoIframe" src="https://crichdstreaming.xyz/embed2.php?id=btsp1&q=TNT Sports 1" name="iframe_a" scrolling="no" autoplay allowfullscreen >Your Browser Do not Support Iframe</iframe>
+    </div>
+	<p>Enjoy live streaming.</p>
+
+    <footer>
+        <p>&copy; 2023 Live TV Streaming. All rights reserved.</p>
+    </footer>
+	
+	
+	<script>
+    const videoIframe = document.getElementById('videoIframe');
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            videoIframe.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    }
+</script>
+
+</body>
+
+</html>
